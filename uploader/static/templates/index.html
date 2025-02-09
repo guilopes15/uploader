@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Uploader de Arquivos</title>
+</head>
+<body>
+    <h2>Uploader de Arquivos</h2>
+    <input type="file" id="fileInput">
+    <button onclick="uploadFile()">Enviar</button>
+    <p id="status"></p>
+
+    <script>
+        async function uploadFile() {
+            const fileInput = document.getElementById("fileInput");
+            const file = fileInput.files[0];
+
+            if (!file) {
+                alert("Selecione um arquivo!");
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append("file", file);
+
+            try {
+                const response = await fetch("http://127.0.0.1:8000/upload/", {
+                    method: "POST",
+                    body: formData
+                });
+
+                const result = await response.json();
+                document.getElementById("status").innerText = "Upload feito com sucesso: " + result.filename;
+            } catch (error) {
+                document.getElementById("status").innerText = "Erro ao enviar o arquivo!";
+            }
+        }
+    </script>
+</body>
+</html>
