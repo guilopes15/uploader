@@ -29,7 +29,7 @@ def root(request: Request):
 @app.post('/uploader')
 def upload_file(file: UploadFile = File(...)):
     try:
-        file_path = UPLOAD_DIR / f'{file.name}'
+        file_path = UPLOAD_DIR / file.filename
         with file_path.open('wb') as buffer:
             shutil.copyfileobj(file.file, buffer)
     
